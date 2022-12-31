@@ -5,7 +5,10 @@ export const getImage = async (search) => {
   const data = await response.json();
   console.log('data', data);
   const images = data.images;
-  return images;
+  const filteredImages = images
+    .filter((img) => !img.nsfw)
+    .filter((img) => !img.grid);
+  return filteredImages;
 };
 
 const selectAtRandom = (array, tries) => {
