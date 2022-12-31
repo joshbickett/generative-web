@@ -4,9 +4,12 @@ import React from 'react';
 
 console.log('Content script works! It should only load on Google.');
 
+let lastSearch = '';
+
 const App = () => {
   React.useEffect(() => {
-    updateButton();
+    addGenerationButton();
+    updateImages();
   }, []);
 
   return <div id="extension-ui"></div>;
@@ -20,11 +23,12 @@ setTimeout(() => {
   ReactDOM.render(<App />, root);
 }, 500);
 
-const updateButton = () => {
+const addGenerationButton = () => {
   const button = document.querySelectorAll(
     '[aria-label="I\'m Feeling Lucky"]'
   )[1];
   console.log('Button found!', button);
+  if (!button) return;
   button.value = 'Generate!';
   // prevent default on all mouse over, hover, etc. and console log on the event
   button.addEventListener('mouseover', (e) => {
@@ -42,5 +46,35 @@ const updateButton = () => {
     e.preventDefault();
     e.stopPropagation();
     console.log('Button clicked!');
+
+    // navigate to the new location
+    const url = 'https://www.google.com/search?q=pictures+of+puppies';
+
+    window.location.href = url;
+  });
+};
+
+const updateImages = () => {
+  // wait for images to load
+  console.log('Waiting for images to load...');
+  console.log('Checking for images...');
+  let images = document.querySelector('[jscontroller="fhcUyb"]').children[0]
+    .children;
+  const imageTitle = document.querySelector('.GmE3X');
+  const barThing = document.querySelector('g-expandable-content');
+  if (!images) return;
+  if (!imageTitle) return;
+  if (!barThing) return;
+  barThing.style.display = 'none';
+  imageTitle.textContent = 'AI Generated pictures of puppies';
+  // turn the HTML collection into an array
+  images = Array.from(images);
+  // loop through the images and add the src to the image
+  images.forEach((image) => {
+    console.log('Image found!', image);
+    // image.querySelector('img').src =
+    //   'https://cdn.britannica.com/10/152310-050-5A09D74A/Sand-dunes-Sahara-Morocco-Merzouga.jpg';
+    // display none on the image
+    image.style.display = 'none';
   });
 };

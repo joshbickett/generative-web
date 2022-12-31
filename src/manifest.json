@@ -17,7 +17,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://www.google.com/"],
+      "matches": ["https://www.google.com/*"],
       "js": ["contentScript.bundle.js"],
       "css": ["content.styles.css"]
     }
