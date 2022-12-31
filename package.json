@@ -1,12 +1,7 @@
 {
-  "name": "chrome-extension-boilerplate-react",
+  "name": "generative-web",
   "version": "4.4.0",
-  "description": "A chrome extension boilerplate built with React 17, Webpack 5, and Webpack Dev Server 4",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/lxieyang/chrome-extension-boilerplate-react.git"
-  },
+  "description": "A web experience where you generate content or code when needed while browsing.",
   "scripts": {
     "build": "node utils/build.js",
     "start": "node utils/webserver.js",
