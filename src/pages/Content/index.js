@@ -1,6 +1,7 @@
 import { printLine } from './modules/print';
 import ReactDOM from 'react-dom';
 import React from 'react';
+import { getImage } from './api';
 
 console.log('Content script works! It should only load on Google.');
 
@@ -54,7 +55,7 @@ const addGenerationButton = () => {
   });
 };
 
-const updateImages = () => {
+const updateImages = async () => {
   // wait for images to load
   console.log('Waiting for images to load...');
   console.log('Checking for images...');
@@ -71,10 +72,30 @@ const updateImages = () => {
   images = Array.from(images);
   // loop through the images and add the src to the image
   images.forEach((image) => {
-    console.log('Image found!', image);
-    // image.querySelector('img').src =
-    //   'https://cdn.britannica.com/10/152310-050-5A09D74A/Sand-dunes-Sahara-Morocco-Merzouga.jpg';
-    // display none on the image
     image.style.display = 'none';
   });
+  // save the get parameters
+  const params = new URLSearchParams(window.location.search);
+  // get the search query
+  const search = params.get('q');
+  console.log('Search query:', search);
+  const newImages = await getImage(search);
+  console.log('New images:', newImages);
+  // loop through the images and add the src to the image
+  images.forEach((image) => {
+    // image.querySelector('img').src = newImages[0];
+    const randomImage = selectAtRandom(newImages, 0);
+    image.querySelector('img').src = randomImage;
+    image.style.display = 'inline-block';
+  });
+};
+
+const selectAtRandom = (array) => {
+  const randomImage = array[Math.floor(Math.random() * array.length)];
+
+  const index = array.indexOf(randomImage);
+  if (index > -1) {
+    array.splice(index, 1);
+  }
+  return randomImage?.src;
 };
