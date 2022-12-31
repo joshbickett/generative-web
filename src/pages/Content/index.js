@@ -15,8 +15,10 @@ const App = () => {
 
   return <div id="extension-ui"></div>;
 };
-const container = document.querySelector('.GyAeWb');
-if (container) container.style.display = 'none';
+const container = document.querySelector('#main');
+if (container) {
+  container.style.display = 'none';
+}
 
 setTimeout(() => {
   const root = document.createElement('div');
@@ -51,7 +53,11 @@ const addGenerationButton = () => {
     console.log('Button clicked!');
 
     // navigate to the new location
-    const url = 'https://www.google.com/search?q=pictures+of+puppies';
+    const generationInput = document.querySelector('[class="gLFyf"]');
+    /// reformat for search
+    const search = generationInput.value.replace(' ', '+');
+    console.log('Search query:', search);
+    const url = 'https://www.google.com/search?q=' + search;
 
     window.location.href = url;
   });
@@ -69,7 +75,6 @@ const updateImages = async () => {
   if (!images) return;
   if (!imageTitle) return;
   if (!barThing) return;
-  if (!container) return;
   barThing.style.display = 'none';
 
   // save the get parameters
@@ -81,9 +86,9 @@ const updateImages = async () => {
   // turn the HTML collection into an array
   images = Array.from(images);
   // loop through the images and add the src to the image
-  images.forEach((image) => {
-    image.style.display = 'none';
-  });
+  // images.forEach((image) => {
+  //   // image.style.display = 'none';
+  // });
 
   const newImages = await getImage(search);
   console.log('New images:', newImages);
@@ -92,9 +97,9 @@ const updateImages = async () => {
     // image.querySelector('img').src = newImages[0];
     const randomImage = selectAtRandom(newImages, 0);
     image.querySelector('img').src = randomImage;
-    image.style.display = 'inline-block';
+    // image.style.display = 'inline-block';
   });
-  container.style.display = 'flex';
+  container.style.display = 'block';
 };
 
 const selectAtRandom = (array) => {
