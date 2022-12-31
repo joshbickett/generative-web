@@ -15,6 +15,8 @@ const App = () => {
 
   return <div id="extension-ui"></div>;
 };
+const container = document.querySelector('.GyAeWb');
+if (container) container.style.display = 'none';
 
 setTimeout(() => {
   const root = document.createElement('div');
@@ -22,7 +24,7 @@ setTimeout(() => {
 
   document.body.appendChild(root);
   ReactDOM.render(<App />, root);
-}, 500);
+}, 100);
 
 const addGenerationButton = () => {
   const button = document.querySelectorAll(
@@ -63,22 +65,26 @@ const updateImages = async () => {
     .children;
   const imageTitle = document.querySelector('.GmE3X');
   const barThing = document.querySelector('g-expandable-content');
+
   if (!images) return;
   if (!imageTitle) return;
   if (!barThing) return;
+  if (!container) return;
   barThing.style.display = 'none';
-  imageTitle.textContent = 'AI Generated pictures of puppies';
+
+  // save the get parameters
+  const params = new URLSearchParams(window.location.search);
+  // get the search query
+  const search = params.get('q');
+  console.log('Search query:', search);
+  imageTitle.textContent = 'AI Generated ' + search;
   // turn the HTML collection into an array
   images = Array.from(images);
   // loop through the images and add the src to the image
   images.forEach((image) => {
     image.style.display = 'none';
   });
-  // save the get parameters
-  const params = new URLSearchParams(window.location.search);
-  // get the search query
-  const search = params.get('q');
-  console.log('Search query:', search);
+
   const newImages = await getImage(search);
   console.log('New images:', newImages);
   // loop through the images and add the src to the image
@@ -88,6 +94,7 @@ const updateImages = async () => {
     image.querySelector('img').src = randomImage;
     image.style.display = 'inline-block';
   });
+  container.style.display = 'flex';
 };
 
 const selectAtRandom = (array) => {
